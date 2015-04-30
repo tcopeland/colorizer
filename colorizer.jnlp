@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://infoether.com/~tom/colorizer/" href="http://infoether.com/~tom/colorizer/colorizer.jnlp">
+    <information>
+        <title>Colorize example</title>
+        <vendor>Tom Copeland</vendor>
+        <description>Colorize example</description>
+        <description kind="short">Just a quick example.</description>
+        <homepage href="http://infoether.com/~tom/colorizer/"/>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <offline-allowed/>
+    <resources>
+        <j2se version="1.5+"/>
+        <jar href="colorizer.jar"/>
+    </resources>
+    <application-desc main-class="ColorMapper"/>
+</jnlp>

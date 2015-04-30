@@ -1,0 +1,65 @@
+<html>
+  <head><title>Colorizer</title></head>
+  <body>
+    <h3>Fun with JavaCC and Colors</h3>
+    <p>This is a <A href="colorizer.jnlp">JNLP launcher for a little program</a> to show color highlighting on some text based on the JavaCC token kind values.  This was prompted by a note on the javacc-users list by Matthew South.
+    <p>Here's the grammar:</p>
+ <pre>
+ options {
+   BUILD_PARSER=false;
+   OUTPUT_DIRECTORY="src/";
+  JDK_VERSION="1.5";
+ }
+ PARSER_BEGIN(Colorizer)
+ public class Colorizer {}
+ PARSER_END(Colorizer)
+ SKIP : {
+   " "
+ }
+ TOKEN : {
+   &lt;DIGITS : (["0"-"9"])+&gt;
+   | &lt;UPPER : (["A"-"Z"])+&gt;
+   | &lt;LOWER : (["a"-"z"])+&gt;
+ }
+ </pre>
+  <p>And the main program; this builds the color map from the Token.kind values:</p>
+<pre>
+    import javax.swing.*;
+    import java.awt.*;
+    import java.io.StringReader;
+    import java.util.Map;
+    import java.util.HashMap;
+
+    public class ColorMapper {
+        public static void main(String[] args) throws Exception {
+            String txt = "123 ABC abc";
+            Map&lt;Integer, Color&gt; colorMap = new HashMap&lt;Integer, Color&gt;();
+            colorMap.put(ColorizerConstants.DIGITS, Color.BLUE);
+            colorMap.put(ColorizerConstants.LOWER, Color.RED);
+            colorMap.put(ColorizerConstants.UPPER, Color.GREEN);
+            new ColorizerTokenManager(new SimpleCharStream(new StringReader(txt)));
+
+            JTextPane jtp = new JTextPane();
+            jtp.setText(txt);
+
+            JFrame jf = new JFrame();
+            jf.add(jtp);
+            jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            jf.setSize(100,200);
+            jf.setVisible(true);
+
+            Token t;
+            while ((t = ColorizerTokenManager.getNextToken()).kind != 0) {
+                jtp.setSelectionStart(t.beginColumn-1);
+                jtp.setSelectionEnd(t.endColumn);
+                jtp.setSelectionColor(colorMap.get(t.kind));
+                Thread.currentThread().sleep(1000);
+            }
+        }
+    }
+    
+</pre>
+  <p><a href="http://generatingparserswithjavacc.com">Generating Parsers With JavaCC</a></p>
+  </body>
+</html>
+

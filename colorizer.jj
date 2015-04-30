@@ -1,0 +1,16 @@
+options {
+  BUILD_PARSER=false;
+  OUTPUT_DIRECTORY="src/";
+  JDK_VERSION="1.5";
+}
+PARSER_BEGIN(Colorizer)
+public class Colorizer {}
+PARSER_END(Colorizer)
+SKIP : {
+  " "
+}
+TOKEN : {
+  <DIGITS : (["0"-"9"])+>
+  | <UPPER : (["A"-"Z"])+>
+  | <LOWER : (["a"-"z"])+>
+}
